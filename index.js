@@ -17,6 +17,7 @@ async function run() {
     try {
         await client.connect();
         const database = client.db('pchutCollection').collection('pcParts');
+        const orderCollection = client.db('pchutCollection').collection('pcOrders');
 
         // get data from mongo db
         app.get('/products', async (req, res) => {
@@ -33,6 +34,13 @@ async function run() {
             const cursor = database.find(query)
             const db = await cursor.toArray()
             res.send(db)
+        })
+
+        // post data to Mongo DB
+        app.post('/orders', async (req, res) => {
+            const order = req.body
+            const result = await orderCollection.insertOne(order)
+            res.send({ ack: "order added to server" })
         })
 
     } finally {
