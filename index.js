@@ -25,6 +25,16 @@ async function run() {
             const db = await cursor.toArray()
             res.send(db)
         })
+
+        // get data via params
+        app.get('/products/:id', async (req, res) => {
+            const id = req.params.id
+            const query = { _id: objectId(id) }
+            const cursor = database.find(query)
+            const db = await cursor.toArray()
+            res.send(db)
+        })
+
     } finally {
 
     }
