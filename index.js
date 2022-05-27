@@ -37,6 +37,17 @@ async function run() {
             res.send(db)
         })
 
+
+
+        // get data by filtering Query..........
+        app.get('/orders', async (req, res) => {
+            const email = req.query.email
+            const query = { uEmail: email }
+            const cursor = orderCollection.find(query)
+            const filter = await cursor.toArray()
+            res.send(filter)
+        })
+
         // post data to Mongo DB
         app.post('/orders', async (req, res) => {
             const order = req.body
@@ -49,6 +60,14 @@ async function run() {
             const review = req.body
             const result = await reviewCollection.insertOne(review)
             res.send({ ack: "review added to server" })
+        })
+
+        // delete a single User
+        app.delete('/orders/:id', async (req, res) => {
+            const id = req.params.id
+            const query = { _id: objectId(id) }
+            const result = await orderCollection.deleteOne(query)
+            res.send(result)
         })
 
     } finally {
