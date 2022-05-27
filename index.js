@@ -18,6 +18,7 @@ async function run() {
         await client.connect();
         const database = client.db('pchutCollection').collection('pcParts');
         const orderCollection = client.db('pchutCollection').collection('pcOrders');
+        const reviewCollection = client.db('pchutCollection').collection('pcReviews');
 
         // get data from mongo db
         app.get('/products', async (req, res) => {
@@ -41,6 +42,13 @@ async function run() {
             const order = req.body
             const result = await orderCollection.insertOne(order)
             res.send({ ack: "order added to server" })
+        })
+
+
+        app.post('/reviews', async (req, res) => {
+            const review = req.body
+            const result = await reviewCollection.insertOne(review)
+            res.send({ ack: "review added to server" })
         })
 
     } finally {
