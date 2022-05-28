@@ -56,6 +56,13 @@ async function run() {
             res.send(db)
         })
 
+        // post data to Mongo DB
+        app.post('/products', async (req, res) => {
+            const product = req.body
+            const result = await database.insertOne(product)
+            res.send({ ack: "product added to server" })
+        })
+
 
 
         // get data by filtering Query..........
@@ -100,7 +107,7 @@ async function run() {
         // delete a single User
         app.delete('/user/:email', async (req, res) => {
             const email = req.params.email
-            const query = { email:email}
+            const query = { email: email }
             const result = await userCollection.deleteOne(query)
             res.send(result)
         })
@@ -111,6 +118,12 @@ async function run() {
             const users = await userCollection.find().toArray();
             res.send(users);
         });
+
+        app.post('/user', async (req, res) => {
+            const p = req.body
+            const result = await userCollection.insertOne(p)
+            res.send({ ack: "Profile Update" })
+        })
 
         app.get('/admin/:email', async (req, res) => {
             const email = req.params.email;
