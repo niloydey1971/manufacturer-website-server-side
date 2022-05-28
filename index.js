@@ -89,6 +89,13 @@ async function run() {
             res.send({ ack: "order added to server" })
         })
 
+        app.get('/reviews', async (req, res) => {
+            const query = {}
+            const cursor = reviewCollection.find(query)
+            const db = await cursor.toArray()
+            res.send(db)
+        })
+
 
         app.post('/reviews', async (req, res) => {
             const review = req.body
