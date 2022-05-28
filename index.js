@@ -20,6 +20,7 @@ async function run() {
         const database = client.db('pchutCollection').collection('pcParts');
         const orderCollection = client.db('pchutCollection').collection('pcOrders');
         const reviewCollection = client.db('pchutCollection').collection('pcReviews');
+        const userCollection = client.db('pchutCollection').collection('pcUsers');
 
         // get data from mongo db
         app.get('/products', async (req, res) => {
@@ -80,7 +81,7 @@ async function run() {
             const updateDoc = {
                 $set: user,
             };
-            const result = await pcUsers.updateOne(filter, updateDoc, options);
+            const result = await userCollection.updateOne(filter, updateDoc, options);
             const token = jwt.sign({ email: email }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' })
             res.send({ result, token });
         })
